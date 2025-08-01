@@ -1,9 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 
-import { Suspense } from "react";
 import { HeroSection } from "@/components/hero-section";
 import HeroPortfolio from "@/components/hero-portfolio";
 import { homeDetails } from "@/data/homeDetails";
@@ -27,8 +26,7 @@ const clientLogos = [
   // ...other logo imports
 ];
 
-export default function HomePage() {
-  //const data = await getHomePageData();
+function HomePageContent() {
   const client = getClient({ token: readToken });
   const [works, setWorks] = useState<Work[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -56,16 +54,13 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-    // Listen for both /?scrollTo=works and /#works
     const scrollToWorks = () => {
-      // `/works` redirect lands on `/?scrollTo=works`
       if (searchParams.get("scrollTo") === "works") {
         const worksSection = document.getElementById("works");
         if (worksSection) {
           worksSection.scrollIntoView({ behavior: "smooth", block: "start" });
         }
       }
-      // If someone lands on /#works directly
       if (typeof window !== "undefined" && window.location.hash === "#works") {
         const worksSection = document.getElementById("works");
         if (worksSection) {
@@ -74,10 +69,7 @@ export default function HomePage() {
       }
     };
 
-    // Delay to ensure the section is rendered
     setTimeout(scrollToWorks, 500);
-
-    // Optional: rerun when path/search changes (covers client-side navigation)
   }, [pathname, searchParams]);
 
   if (isLoading) {
@@ -89,18 +81,26 @@ export default function HomePage() {
   }
 
   return (
+    <>
+      <HeroSection data={homeDetails.hero} />
+      <HeroPortfolio
+        description="We are an award-winning Abuja/Nigeria-based creative production specializing in short video and photography. Our founders, Alaba and Oheha Olaleye, infuse every project with their distinctive style and passion. Startups, brands, and marketing agencies can rely on us to stand out and take the lead."
+        clientLogos={clientLogos}
+      />
+      <FeaturedWorks
+        id="works"
+        sectionTitle="Featured Works"
+        projects={works}
+      />
+    </>
+  );
+}
+
+export default function HomePage() {
+  return (
     <div className="min-h-screen">
       <Suspense fallback={<div>Loading...</div>}>
-        <HeroSection data={homeDetails.hero} />
-        <HeroPortfolio
-          description="We are an award-winning Abuja/Nigeria-based creative production specializing in short video and photography. Our founders, Alaba and Oheha Olaleye, infuse every project with their distinctive style and passion. Startups, brands, and marketing agencies can rely on us to stand out and take the lead."
-          clientLogos={clientLogos}
-        />
-        <FeaturedWorks
-          id="works"
-          sectionTitle="Featured Works"
-          projects={works}
-        />
+        <HomePageContent />
       </Suspense>
     </div>
   );
