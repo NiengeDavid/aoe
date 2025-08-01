@@ -21,7 +21,7 @@ export function HeroSection({ data }: HeroSectionProps) {
       {/* Background Image */}
       <div className="absolute inset-0">
         <Image
-          src={studio}
+          src={data?.heroImage || studio}
           alt="Photography Studio Setup"
           fill
           className="object-cover"

@@ -1,8 +1,17 @@
+"use client";
+
+import { useState, useEffect } from "react";
+
 import { Suspense } from "react";
 import { HeroSection } from "@/components/hero-section";
 import HeroPortfolio from "@/components/hero-portfolio";
-import { getHomePageData } from "@/lib/sanity";
+import { homeDetails } from "@/data/homeDetails";
 import FeaturedWorks from "@/components/featuredWork";
+
+import { getAllWorks, getClient } from "@/sanity/lib/sanity.client";
+import { type Work } from "@/sanity/lib/sanity.queries";
+import { readToken } from "@/sanity/lib/sanity.api";
+import { toast } from "sonner";
 
 import amazon from "@/public/assets/logos/amazon.png";
 import netflix from "@/public/assets/logos/netflix.png";
@@ -23,6 +32,7 @@ import wed12 from "@/public/assets/projects/wed12.png";
 import wed9 from "@/public/assets/projects/wed9.png";
 import wed10 from "@/public/assets/projects/wed10.png";
 import wed13 from "@/public/assets/projects/wed13.png";
+import { set } from "sanity";
 
 const clientLogos = [
   amazon,
@@ -55,18 +65,49 @@ const projects = [
   // ...more projects
 ];
 
-export default async function HomePage() {
-  const data = await getHomePageData();
+export default function HomePage() {
+  //const data = await getHomePageData();
+  const client = getClient({ token: readToken });
+  const [works, setWorks] = useState<Work[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchWorks = async () => {
+      setIsLoading(true);
+      try {
+        const worksData = await getAllWorks(client);
+        setWorks(worksData);
+        console.log("works Data:", worksData);
+      } catch (error) {
+        toast("Network Error", {
+          description:
+            "Error fetching Featured Works data; kindly check your internet connection.",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchWorks();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="text-center text-primary font-serif text-2xl">
+        Loading...
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen">
       <Suspense fallback={<div>Loading...</div>}>
-        <HeroSection data={data} />
+        <HeroSection data={homeDetails.hero} />
         <HeroPortfolio
           description="We are an award-winning Abuja/Nigeria-based creative production specializing in short video and photography. Our founders, Alaba and Oheha Olaleye, infuse every project with their distinctive style and passion. Startups, brands, and marketing agencies can rely on us to stand out and take the lead."
           clientLogos={clientLogos}
         />
-        <FeaturedWorks sectionTitle="Featured Works" projects={projects} />
+        <FeaturedWorks sectionTitle="Featured Works" projects={works} />
       </Suspense>
     </div>
   );

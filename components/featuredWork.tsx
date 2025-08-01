@@ -3,18 +3,11 @@
 import Masonry from "react-masonry-css";
 import Image, { StaticImageData } from "next/image";
 import Container from "./container";
-
-type Project = {
-  images: (string | StaticImageData)[];
-  title: { main: string; italic?: string };
-  description: string;
-  details: { label: string; value: string }[];
-  team: { role: string; name: string }[];
-};
+import { Work } from "@/sanity/lib/sanity.queries";
 
 type FeaturedWorksProps = {
   sectionTitle: string;
-  projects: Project[];
+  projects: Work[];
 };
 
 const breakpointColumnsObj = {
@@ -45,19 +38,21 @@ export default function FeaturedWorks({
               {project.images.map((img, i) => (
                 <div key={i} className="mb-8 rounded-2xl overflow-hidden">
                   {typeof img === "string" ? (
-                    <img
-                      src={img}
-                      alt=""
-                      className="w-full h-auto object-cover rounded-2xl"
-                      loading="lazy"
-                    />
+                  <img
+                    src={img}
+                    alt="Project Image"
+                    className="object-cover rounded-2xl"
+                    loading="lazy"
+                    style={{ width: "auto", height: "auto" }}
+                  />
                   ) : (
-                    <Image
-                      src={img}
-                      alt=""
-                      className="w-full h-auto object-cover rounded-2xl"
-                      placeholder="blur"
-                    />
+                  <Image
+                    src={img.url}
+                    alt={img.alt || "Project Image"}
+                    width={img.width || 800} // Default width
+                    height={img.height || 600} // Default height
+                    className="object-cover rounded-2xl"
+                  />
                   )}
                 </div>
               ))}
