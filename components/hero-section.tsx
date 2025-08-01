@@ -13,8 +13,8 @@ interface HeroSectionProps {
 const studio = "/assets/studio2.png";
 
 export function HeroSection({ data }: HeroSectionProps) {
-  const heroText = data?.heroText || "If you're not smiling,";
-  const heroSubtext = data?.heroSubtext || "we're not done";
+  const heroText = data?.heroText || "";
+  const heroSubtext = data?.heroSubtext || "";
 
   return (
     <section className="relative h-screen w-full overflow-hidden">

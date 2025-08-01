@@ -7,6 +7,7 @@ import { Work } from "@/sanity/lib/sanity.queries";
 
 type FeaturedWorksProps = {
   sectionTitle: string;
+  id: string;
   projects: Work[];
 };
 
@@ -37,10 +38,11 @@ function getDimensionsFromUrl(url: string): Dimensions {
 
 export default function FeaturedWorks({
   sectionTitle,
+  id,
   projects,
 }: FeaturedWorksProps) {
   return (
-    <section className="w-full px-4 py-16 mx-auto">
+    <section id={id || "works"} className="w-full px-4 py-20 mx-auto">
       <Container>
         <h2 className="scroll-m-20 mb-10 border-b pb-2 text-5xl text-start font-serif italic font-normal tracking-tight first:mt-0 md:border-none">
           {sectionTitle}

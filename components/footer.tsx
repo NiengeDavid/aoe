@@ -2,8 +2,8 @@ import { FaWhatsapp, FaInstagram, FaEnvelope } from "react-icons/fa";
 
 export default function CustomFooter() {
   return (
-    <footer className="bg-white w-full mt-20">
-      <div className="max-w-8xl mx-auto px-4 py-12">
+    <footer className=" bg-white w-full">
+      <div className="max-w-8xl mx-auto px-4">
         <div className="bg-pink-100 text-black">
           {/* Tagline */}
           <div className="bg-green-300 text-yellow-600 text-center text-3xl md:text-4xl px-3 py-6 font-serif">

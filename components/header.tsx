@@ -21,6 +21,17 @@ const AVATARS = [
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  // Add this function to your Header component
+  const handleWorksClick = (e: React.MouseEvent) => {
+    const isOnHomePage = window.location.pathname === "/";
+    if (isOnHomePage) {
+      e.preventDefault();
+      document.getElementById("works")?.scrollIntoView({ behavior: "smooth" });
+      setMobileMenuOpen(false);
+    }
+    // Otherwise, the default link behavior will trigger the redirect
+  };
+
   return (
     <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b">
       <Container>
@@ -58,6 +69,7 @@ export function Header() {
                 key={item.name}
                 href={item.href}
                 className="text-sm font-semibold text-gray-900 hover:text-gray-600 transition-colors"
+                scroll={item.name === "WORKS" ? false : true}
               >
                 {item.name}
               </Link>
@@ -106,7 +118,12 @@ export function Header() {
                     key={item.name}
                     href={item.href}
                     className="block p-3 text-gray-900 font-medium hover:bg-gray-200 rounded-none"
-                    onClick={() => setMobileMenuOpen(false)}
+                    onClick={
+                      item.name === "WORKS"
+                        ? handleWorksClick
+                        : () => setMobileMenuOpen(false)
+                    }
+                    scroll={item.name === "WORKS" ? false : true}
                   >
                     {item.name}
                   </Link>
