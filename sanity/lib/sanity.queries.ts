@@ -24,9 +24,30 @@ export const getAllWorksQuery = groq`
 }
 `;
 
+//All shoort films query
+export const getAllShortFilmQuery = `
+*[_type == "directors"]{
+  _id,
+  title,
+  description,
+  video{
+    "url": asset->url,
+  },
+  labels[]{
+    label,
+    value
+  }
+}
+`;
+
 export interface SanityImage {
   url: string;
   alt?: string;
+}
+
+export interface ProjectLabel {
+  label: string;
+  value: string;
 }
 
 export interface Work {
@@ -45,4 +66,14 @@ export interface Work {
     role: string;
     name: string;
   }[];
+}
+
+export interface Directors {
+  _id: string;
+  title: string;
+  description: string;
+  video: {
+    url: string;
+  };
+  labels: ProjectLabel[];
 }

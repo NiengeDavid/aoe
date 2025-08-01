@@ -6,7 +6,12 @@ import {
 } from "@/sanity/lib/sanity.api";
 
 import { createClient, type SanityClient } from "next-sanity";
-import { getAllWorksQuery, Work } from "./sanity.queries";
+import {
+  Directors,
+  getAllShortFilmQuery,
+  getAllWorksQuery,
+  Work,
+} from "./sanity.queries";
 
 export function getClient(preview?: { token: string }): SanityClient {
   const client = createClient({
@@ -32,4 +37,11 @@ export const getSanityImageConfig = () => getClient();
 // Fetch all featured works
 export async function getAllWorks(client: SanityClient): Promise<Work[]> {
   return await client.fetch(getAllWorksQuery);
+}
+
+//Fetch all short films
+export async function getAllShortFilm(
+  client: SanityClient
+): Promise<Directors[]> {
+  return await client.fetch(getAllShortFilmQuery);
 }
