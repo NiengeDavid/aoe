@@ -18,6 +18,23 @@ const breakpointColumnsObj = {
   0: 1,
 };
 
+interface Dimensions {
+  width: number;
+  height: number;
+}
+
+function getDimensionsFromUrl(url: string): Dimensions {
+  // Match the last occurrence of -WIDTHxHEIGHT- before file extension
+  const dimensionsMatch = url.match(/-(\d+)x(\d+)(?=[^/]*$)/);
+  if (dimensionsMatch) {
+    return {
+      width: parseInt(dimensionsMatch[1]),
+      height: parseInt(dimensionsMatch[2]),
+    };
+  }
+  return { width: 800, height: 600 }; // Fallback dimensions
+}
+
 export default function FeaturedWorks({
   sectionTitle,
   projects,
@@ -35,27 +52,21 @@ export default function FeaturedWorks({
               className="flex w-full gap-8"
               columnClassName="masonry-column"
             >
-              {project.images.map((img, i) => (
-                <div key={i} className="mb-8 rounded-2xl overflow-hidden">
-                  {typeof img === "string" ? (
-                  <img
-                    src={img}
-                    alt="Project Image"
-                    className="object-cover rounded-2xl"
-                    loading="lazy"
-                    style={{ width: "auto", height: "auto" }}
-                  />
-                  ) : (
-                  <Image
-                    src={img.url}
-                    alt={img.alt || "Project Image"}
-                    width={img.width || 800} // Default width
-                    height={img.height || 600} // Default height
-                    className="object-cover rounded-2xl"
-                  />
-                  )}
-                </div>
-              ))}
+              {project.images.map((photo, i) => {
+                const { width, height } = getDimensionsFromUrl(photo.url);
+                return (
+                  <div key={i} className="mb-8 rounded-2xl overflow-hidden">
+                    <Image
+                      src={photo.url}
+                      alt={photo.alt || "Project Image"}
+                      width={width}
+                      height={height}
+                      className="w-full h-auto object-cover rounded-2xl"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                  </div>
+                );
+              })}
             </Masonry>
             <div className="mt-12 flex flex-col md:flex-row md:justify-between">
               <div className="md:w-2/3">

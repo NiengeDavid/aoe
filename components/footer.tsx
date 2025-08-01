@@ -19,13 +19,13 @@ export default function CustomFooter() {
 
             <div className="flex flex-grow sm:flex-row justify-center items-center gap-4 mb-10">
               <a
-                href="mailto:yourstudio@email.com"
+                href="mailto:olaleyealaba2@gmail.com"
                 className="text-lg text-gray-700 hover:text-gray-900 transition-colors"
               >
                 <FaEnvelope className="w-8 h-8 inline mr-2" />
               </a>
               <a
-                href="https://instagram.com/yourhandle"
+                href="https://www.instagram.com/aoevisuals/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-lg text-gray-700 hover:text-gray-900 transition-colors"
@@ -33,7 +33,7 @@ export default function CustomFooter() {
                 <FaInstagram className="w-8 h-8 inline mr-2" />
               </a>
               <a
-                href="https://wa.me/234xxxxxxxxxx"
+                href="https://wa.me/+2347065828796"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-lg text-gray-700 hover:text-gray-900 transition-colors"
