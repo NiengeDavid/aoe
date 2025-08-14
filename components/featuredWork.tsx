@@ -48,7 +48,7 @@ export default function FeaturedWorks({
           {sectionTitle}
         </h2>
         {projects.map((project, idx) => (
-          <div className="mb-20" key={idx}>
+          <div className="mb-40 scroll-m-20 border-b pb-12" key={idx}>
             <Masonry
               breakpointCols={breakpointColumnsObj}
               className="flex w-full gap-8"
@@ -70,7 +70,7 @@ export default function FeaturedWorks({
                 );
               })}
             </Masonry>
-            <div className="mt-12 flex flex-col md:flex-row md:justify-between">
+            <div className="mt-2 flex flex-col md:flex-row md:justify-between">
               <div className="md:w-2/3">
                 <h3 className="font-serif text-3xl md:text-4xl font-normal mb-4 text-left">
                   {project.title.main}
